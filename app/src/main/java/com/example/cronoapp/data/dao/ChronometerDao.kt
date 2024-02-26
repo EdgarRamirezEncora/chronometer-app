@@ -15,8 +15,11 @@ interface ChronometerDao {
     @Query("SELECT * FROM chronometers")
     fun getAllChronometers(): Flow<List<Chronometer>>
 
-    @Query("SELECT * FROM chronometers WHERE id= :id")
+    @Query("SELECT * FROM chronometers WHERE id = :id")
     fun getChronometer(id: Long): Flow<Chronometer>
+
+    @Query("SELECT * FROM chronometers WHERE title LIKE '%' || :title || '%'")
+    fun getChronometersByTitle(title: String): Flow<List<Chronometer>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertChronometer(chronometer: Chronometer)

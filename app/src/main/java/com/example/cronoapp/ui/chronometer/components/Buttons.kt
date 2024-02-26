@@ -19,11 +19,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun FloatButton(onClick: () -> Unit) {
+fun FloatButton(
+    isColorBlindMode: Boolean,
+    onClick: () -> Unit
+) {
     FloatingActionButton(
         onClick = onClick,
         containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = Color.White,
+        contentColor = if(isColorBlindMode) Color.Black else Color.White,
         modifier = Modifier.size(75.dp),
         shape = CircleShape
     ) {
@@ -37,8 +40,14 @@ fun FloatButton(onClick: () -> Unit) {
 
 @Composable
 fun MainIconButton(icon: ImageVector, onClick:() -> Unit){
-    IconButton(onClick = onClick) {
-        Icon(imageVector = icon, contentDescription = null, tint = Color.White)
+    IconButton(
+        onClick = onClick
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = Color.White
+        )
     }
 }
 

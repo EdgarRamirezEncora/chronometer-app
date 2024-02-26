@@ -29,4 +29,9 @@ class ChronometerRepository @Inject constructor(
                                                             .getChronometer(id)
                                                             .flowOn(Dispatchers.IO)
                                                             .conflate()
+
+    fun getChronometersByTitle(title: String): Flow<List<Chronometer>> = chronometerDao
+                                                                    .getChronometersByTitle(title)
+                                                                    .flowOn(Dispatchers.IO)
+                                                                    .conflate()
 }

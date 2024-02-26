@@ -19,7 +19,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +33,7 @@ import com.example.cronoapp.data.dataStore.PreferencesDataStore
 import com.example.cronoapp.data.entities.Chronometer
 import com.example.cronoapp.ui.chronometer.components.Alert
 import com.example.cronoapp.ui.chronometer.components.CircularButton
+import com.example.cronoapp.ui.chronometer.components.MainActions
 import com.example.cronoapp.ui.chronometer.components.MainIconButton
 import com.example.cronoapp.ui.chronometer.components.MainTextField
 import com.example.cronoapp.ui.chronometer.components.MainTitle
@@ -48,7 +48,8 @@ fun AddView(
     addChronometerViewModel: AddChronometerViewModel,
     chronometerViewModel: ChronometerViewModel,
     dataStore: PreferencesDataStore,
-    isDarkMode: Boolean
+    isDarkMode: Boolean,
+    isColorBlindMode: Boolean
 ) {
     Scaffold(
         topBar = {
@@ -56,20 +57,30 @@ fun AddView(
                 title = {
                     MainTitle(
                         title = "Add Chronometer",
-                        dataStore,
-                        isDarkMode,
+                        isColorBlindMode = isColorBlindMode
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
-                )
+                ),
+                navigationIcon = {
+                    MainIconButton(icon = Icons.Default.ArrowBack) {
+                        navController.popBackStack()
+                    }
+                },
+                actions = {
+                    MainActions(
+                        isColorBlindMode = isColorBlindMode,
+                        isDarkMode = isDarkMode,
+                        dataStore = dataStore
+                    )
+                }
             )
         },
 
     ) {
         AddViewContent(paddingValues = it, navController, addChronometerViewModel, chronometerViewModel)
     }
-
 }
 
 @Composable
@@ -156,11 +167,10 @@ fun AddViewContent(
                         if (addChronometerViewModel.validateTitle(state.title)) {
                             chronometerViewModel.addChronometer(
                                 Chronometer(
-                                    title = state.title,
+                                    title = state.title.trim(),
                                     chronometer = addChronometerViewModel.chronometerTime
                                 )
                             )
-
                             addChronometerViewModel.stop()
                             navController.popBackStack()
                         } else {

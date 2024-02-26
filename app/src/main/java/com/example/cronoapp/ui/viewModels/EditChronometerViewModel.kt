@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.cronoapp.domain.repositories.ChronometerRepository
 import com.example.cronoapp.domain.states.ChronometerState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -91,8 +90,9 @@ class EditChronometerViewModel @Inject constructor(
         return titleRegex.matches(title)
     }
 
-    fun getAlertMessage(titleValue: String) : String = if(titleValue.isNotEmpty()) {"The title must have 30 characters max."}
-    else {"The title is required."}
+    fun getAlertMessage(titleValue: String) : String =
+        if(titleValue.isNotEmpty()) {"The title must have 30 characters max."}
+        else {"The title is required."}
 
     fun showTitleAlert() {
         state = state.copy(isValidTitle = false)

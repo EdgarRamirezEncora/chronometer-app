@@ -6,18 +6,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
@@ -35,28 +34,96 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cronoapp.R
 import com.example.cronoapp.data.dataStore.PreferencesDataStore
+import com.example.cronoapp.ui.viewModels.ChronometerViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
+@Composable
+fun MainActions(
+    isColorBlindMode: Boolean,
+    isDarkMode: Boolean,
+    dataStore: PreferencesDataStore
+) {
+    val scope = rememberCoroutineScope()
+    val isMenuOpen = remember { mutableStateOf(false) }
+
+    IconButton(
+        onClick = { isMenuOpen.value = true }
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.menu),
+            contentDescription = "Menu",
+            tint = if(isColorBlindMode) Color.Black else Color.White,
+        )
+
+        DropdownMenu(
+            expanded = isMenuOpen.value,
+            onDismissRequest = { isMenuOpen.value = false }
+        ) {
+            DropdownMenuItem(
+                text = {
+                    Text(
+                        text = "Switch to ${if(isDarkMode) "Light" else "Dark"} mode",
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(
+                            id = if(isDarkMode) R.drawable.light_mode_icon
+                            else R.drawable.dark_mode_icon
+                        ),
+                        contentDescription = "Theme icon"
+                    )
+                },
+                onClick = {
+                    scope.launch(Dispatchers.IO) {
+                        dataStore.updateDarkMode(!isDarkMode)
+                    }
+                },
+            )
+
+            DropdownMenuItem(
+                text = {
+                    Text(
+                        text = "Turn ${if(isColorBlindMode) "off" else "on"} blind color mode",
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.color_blind),
+                        contentDescription = "Theme icon"
+                    )
+                },
+                onClick = {
+                    scope.launch(Dispatchers.IO) {
+                        dataStore.updateColorBlindMode(!isColorBlindMode)
+                    }
+                },
+            )
+            Divider(
+                thickness = 3.dp
+            )
+        }
+    }
+}
 
 @Composable
 fun MainTitle(
     title: String,
-    dataStore: PreferencesDataStore,
-    isDarkMode: Boolean,
+    isColorBlindMode: Boolean
 ) {
     Row(
-        modifier = Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = title,
             fontSize = 25.sp,
-            color = Color.White,
+            color = if(isColorBlindMode) Color.Black else Color.White,
             fontWeight = FontWeight.Bold,
         )
     }
@@ -191,7 +258,6 @@ fun DarkModeSwitchButton (
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Alert(
     title: String,
@@ -210,6 +276,27 @@ fun Alert(
             }
         }
     )
+}
 
+@Composable
+fun SearchBar(
+    chronometerViewModel: ChronometerViewModel
+) {
+    val searchBar = chronometerViewModel.searchBar
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(5.dp)
+    ) {
+        MainTextField(
+            value = searchBar.value,
+            onValueChange = {
+                chronometerViewModel.updateSearchBar(it)
+                chronometerViewModel.getChronometersByTitle(it)
+            },
+            label = "Search"
+        )
+    }
 }
 

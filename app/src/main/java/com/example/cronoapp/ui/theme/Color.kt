@@ -10,5 +10,12 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-// Custom colors
-val Principal = Color(0xFFF4511E)
+// Color blind light mode color palette
+val colorBlindLightPrimary = Color(0xFF37FF00)
+val colorBlindLightSecondary = Color(0xFF42A228)
+val colorBlindLightTertiary = Color(0xFF9DFF82)
+
+// Color blind light mode color palette
+val colorBlindDarkPrimary = Color(0xFF06FFE2)
+val colorBlindDarkSecondary = Color(0xFF28CCB9)
+val colorBlindDarkTertiary = Color(0xFF0C7F72)

@@ -7,11 +7,8 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.cronoapp.data.dataStore.PreferencesDataStore
 import com.example.cronoapp.ui.navigation.NavManager
 import com.example.cronoapp.ui.theme.CronoAppTheme
@@ -31,8 +28,11 @@ class MainActivity : ComponentActivity() {
             val dataStore = PreferencesDataStore(this)
             val darkMode = dataStore.getDarkMode.collectAsState(initial = false)
             val isDarkMode = darkMode.value
+            val colorBlindMode = dataStore.getColorBlindMode.collectAsState(initial = false)
+            val isColorBlindMode = colorBlindMode.value
             CronoAppTheme(
-                darkTheme = isDarkMode
+                darkTheme = isDarkMode,
+                colorBlindMode = isColorBlindMode
             ) {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -40,11 +40,12 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     NavManager(
-                        addChronometerViewModel,
-                        chronometerViewModel,
-                        editChronometerViewModel,
-                        dataStore,
-                        isDarkMode
+                        addChronometerViewModel = addChronometerViewModel,
+                        chronometerViewModel = chronometerViewModel,
+                        editChronometerViewModel = editChronometerViewModel,
+                        dataStore = dataStore,
+                        isDarkMode =  isDarkMode,
+                        isColorBlindMode = isColorBlindMode
                     )
                 }
             }

@@ -14,6 +14,7 @@ class PreferencesDataStore(private val context: Context) {
         private val Context.datastore : DataStore<Preferences> by preferencesDataStore("chronometerAppPreferences")
         val FIRST_TIME = booleanPreferencesKey("first_time")
         val DARK_MODE = booleanPreferencesKey("dark_mode")
+        val COLOR_BLIND_MODE = booleanPreferencesKey("color_blind_mode")
     }
 
     val getFirstTime: Flow<Boolean> = context.datastore.data
@@ -28,5 +29,12 @@ class PreferencesDataStore(private val context: Context) {
 
     suspend fun updateDarkMode(value: Boolean) {
         context.datastore.edit { it[DARK_MODE] = value }
+    }
+
+    val getColorBlindMode: Flow<Boolean> = context.datastore.data
+        .map { it[COLOR_BLIND_MODE] ?: false }
+
+    suspend fun updateColorBlindMode(value: Boolean) {
+        context.datastore.edit { it[COLOR_BLIND_MODE] = value }
     }
 }

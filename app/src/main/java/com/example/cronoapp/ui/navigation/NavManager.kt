@@ -24,6 +24,7 @@ fun NavManager(
     editChronometerViewModel: EditChronometerViewModel,
     dataStore: PreferencesDataStore,
     isDarkMode: Boolean,
+    isColorBlindMode: Boolean
 ) {
     val navController = rememberNavController()
     val isFirstTime = dataStore.getFirstTime.collectAsState(initial = false)
@@ -37,7 +38,8 @@ fun NavManager(
                 navController = navController,
                 chronometerViewModel =  chronometerViewModel,
                 dataStore = dataStore,
-                isDarkMode = isDarkMode
+                isDarkMode = isDarkMode,
+                isColorBlindMode = isColorBlindMode
             )
         }
 
@@ -47,7 +49,8 @@ fun NavManager(
                 addChronometerViewModel = addChronometerViewModel,
                 chronometerViewModel = chronometerViewModel,
                 dataStore = dataStore,
-                isDarkMode = isDarkMode
+                isDarkMode = isDarkMode,
+                isColorBlindMode = isColorBlindMode
             )
         }
 
@@ -64,7 +67,8 @@ fun NavManager(
                 chronometerViewModel = chronometerViewModel,
                 id = id,
                 dataStore = dataStore,
-                isDarkMode = isDarkMode
+                isDarkMode = isDarkMode,
+                isColorBlindMode = isColorBlindMode
             )
         }
 
