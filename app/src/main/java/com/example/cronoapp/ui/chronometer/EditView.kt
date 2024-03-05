@@ -58,7 +58,6 @@ fun EditView(
                 title = {
                     MainTitle(
                         title = "Edit Chronometer",
-                        isColorBlindMode = isColorBlindMode
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(

@@ -16,22 +16,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.cronoapp.R
 
 @Composable
 fun FloatButton(
-    isColorBlindMode: Boolean,
     onClick: () -> Unit
 ) {
     FloatingActionButton(
         onClick = onClick,
         containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = if(isColorBlindMode) Color.Black else Color.White,
+        contentColor = Color.White,
         modifier = Modifier.size(75.dp),
         shape = CircleShape
     ) {
         Icon(
-            imageVector = Icons.Default.Add,
+            painter = painterResource(id = R.drawable.timer) ,
             contentDescription = "Add",
             modifier = Modifier.size(45.dp)
         )
@@ -70,7 +71,8 @@ fun CircularButton(
             painter = icon,
             contentDescription = "",
             modifier = Modifier
-                .size(24.dp)
+                .size(24.dp),
+            tint = Color.White
         )
     }
 }

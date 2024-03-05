@@ -57,7 +57,7 @@ fun MainActions(
         Icon(
             painter = painterResource(id = R.drawable.menu),
             contentDescription = "Menu",
-            tint = if(isColorBlindMode) Color.Black else Color.White,
+            tint = Color.White,
         )
 
         DropdownMenu(
@@ -89,7 +89,7 @@ fun MainActions(
             DropdownMenuItem(
                 text = {
                     Text(
-                        text = "Turn ${if(isColorBlindMode) "off" else "on"} blind color mode",
+                        text = "Turn ${if(isColorBlindMode) "off" else "on"} color blindness mode",
                     )
                 },
                 leadingIcon = {
@@ -114,7 +114,6 @@ fun MainActions(
 @Composable
 fun MainTitle(
     title: String,
-    isColorBlindMode: Boolean
 ) {
     Row(
         horizontalArrangement = Arrangement.Center,
@@ -123,7 +122,7 @@ fun MainTitle(
         Text(
             text = title,
             fontSize = 25.sp,
-            color = if(isColorBlindMode) Color.Black else Color.White,
+            color = Color.White,
             fontWeight = FontWeight.Bold,
         )
     }

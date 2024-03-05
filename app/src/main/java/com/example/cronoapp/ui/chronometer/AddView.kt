@@ -57,7 +57,6 @@ fun AddView(
                 title = {
                     MainTitle(
                         title = "Add Chronometer",
-                        isColorBlindMode = isColorBlindMode
                     )
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
